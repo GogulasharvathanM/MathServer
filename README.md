@@ -46,31 +46,22 @@ html
 ```
 <html>
     <head>
-        <title>Calculation1</title>
+        <title>Churn Calculator</title>
     </head>
     <body>
-        <center>
-            <h1>Gogulasharvathan M</h1>
-            <h1>(26017320)</h1>
-        
-        <form method="POST">
+        <h1 align="center">Churn Rate Calculator</h1>
+        <h2 align="center">Gogulasharvathan M</h2>
+        <h2 align="center">(26017320)</h2>
+        <form method="POST" align="center">
             {%csrf_token%}
-            <label>Initial_Customer</label>
-            <input type="number" name="initial_Customer" value="{{ initial }}" required> <br><br>
-            <label>Present_Customer</label>
-            <input type="number" name="present_Customer" value="{{ present }}" required> <br><br>
-            <h2>Calculate Churn Rate</h2>
-            <input type="submit" value="Calculate" >
-            <input type="text" value="{% if result is not None %}{{ result }}%{% endif %}" readonly>
-            <input type="reset" value="Clear All">
-
-
-
-        </form> 
-        {% if result is not None %}
-            <h2>Churn Rate: {{ result }}%</h2>
-        {% endif %}
-        </center>
+            <label>Initial Customer:</label>
+            <input type="text" value="{{ic}}" name="Initial_Cust"><br><br>
+            <label>Present Customer:</label>
+            <input type="text" value="{{pc}}" name="Present_Cust"><br><br>
+            <input type="submit" value="Calculate"><br><br>
+            <label>Churn Rate:</label>
+            <input type="text" value="{{churn}}"><br><br>
+        </form>
     </body>
 </html>
 
@@ -78,38 +69,27 @@ html
 python
 ```
 from django.shortcuts import render
-
-def calculate_Churn(request):
-    result = None
-    initial = ""
-    present = ""
-    if request.method == "POST":
-        initial = request.POST.get("initial_Customer")
-        present = request.POST.get("present_Customer")
-        if initial and present and int(initial) != 0:
-            result = round(((int(initial) - int(present)) / int(initial)) * 100, 2)
-    return render(request, "mylove/gogul.html", {
-        "result": result,
-        "initial": initial,
-        "present": present
-    })
+def churn_rate(request):
+    i_c= float(request.POST.get('Initial_Cust', '0'))
+    p_c=float(request.POST.get('Present_Cust', '0'))
+    churn = ic/pc if request.method=='POST' else 0
+    print("Initial Customer =",i_c)
+    print("Present Customer =",p_c)
+    print("Churn Rate =",churn)
+    return render(request, 'mylove/gogul.html',{'i_c': i_c, 'p_c': p_c, 'churn': churn})
 
 from django.contrib import admin
 from django.urls import path
-from mylove import views
+from mathapp import views
 
-urlpatterns=[
-    path('admin/', admin.site.urls),
-    path('',views.calculate_Churn,name='calculate'),
-]
+urlpatterns = [path('', views.churn_rate, name='churn_rate'),]
 
 ```
 
 ## OUTPUT - SERVER SIDE:
-![alt text](image-2.png)
-
+![alt text](image-5.png)
 ## OUTPUT - WEBPAGE:
-![alt text](image-1.png)
+![alt text](image-4.png)
 
 ## RESULT:
 The the web page to calculate Churn Rate using server-side scripts is created successfully.

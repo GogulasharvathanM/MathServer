@@ -1,16 +1,9 @@
 from django.shortcuts import render
-
-def calculate_Churn(request):
-    result = None
-    initial = ""
-    present = ""
-    if request.method == "POST":
-        initial = request.POST.get("initial_Customer")
-        present = request.POST.get("present_Customer")
-        if initial and present and int(initial) != 0:
-            result = round(((int(initial) - int(present)) / int(initial)) * 100, 2)
-    return render(request, "mylove/gogul.html", {
-        "result": result,
-        "initial": initial,
-        "present": present
-    })
+def churn_rate(request):
+    i_c= float(request.POST.get('Initial_Cust', '0'))
+    p_c=float(request.POST.get('Present_Cust', '0'))
+    churn = i_c/p_c if request.method=='POST' else 0
+    print("Initial Customer =",i_c)
+    print("Present Customer =",p_c)
+    print("Churn Rate =",churn)
+    return render(request, 'mylove/gogul.html',{'i_c': i_c, 'p_c': p_c, 'churn': churn})
