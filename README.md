@@ -54,12 +54,12 @@ html
         <h2 align="center">(26017320)</h2>
         <form method="POST" align="center">
             {%csrf_token%}
-            <label>Initial Customer:</label>
+            <label><b>Initial Customer:</b></label>
             <input type="text" value="{{ic}}" name="Initial_Cust"><br><br>
-            <label>Present Customer:</label>
+            <label><b>Present Customer:</b></label>
             <input type="text" value="{{pc}}" name="Present_Cust"><br><br>
             <input type="submit" value="Calculate"><br><br>
-            <label>Churn Rate:</label>
+            <label><b>Churn Rate:</b></label>
             <input type="text" value="{{churn}}"><br><br>
         </form>
     </body>
